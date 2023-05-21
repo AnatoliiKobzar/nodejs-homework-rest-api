@@ -1,7 +1,7 @@
 const { HttpError } = require('../utils');
 const Contact = require('../models/contact');
 
-const listContactsService = async () => {
+const getContactsService = async () => {
   const contacts = await Contact.find();
   return contacts;
 };
@@ -50,7 +50,7 @@ const updateStatusContactService = async (contactId, body) => {
 };
 
 module.exports = {
-  listContactsService,
+  getContactsService,
   getContactByIdService,
   removeContactService,
   addContactService,

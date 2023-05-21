@@ -1,5 +1,5 @@
 const {
-  listContactsService,
+  getContactsService,
   getContactByIdService,
   removeContactService,
   addContactService,
@@ -7,9 +7,9 @@ const {
   updateStatusContactService,
 } = require('../services/contactsServices');
 
-const listContacts = async (req, res, next) => {
+const getContacts = async (req, res, next) => {
   try {
-    const contacts = await listContactsService();
+    const contacts = await getContactsService();
     res.status(200).json(contacts);
   } catch (error) {
     next(error);
@@ -66,7 +66,7 @@ const removeContact = async (req, res, next) => {
 };
 
 module.exports = {
-  listContacts,
+  getContacts,
   getContactById,
   addContact,
   updateContact,

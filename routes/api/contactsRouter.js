@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  listContacts,
+  getContacts,
   getContactById,
   addContact,
   removeContact,
@@ -13,7 +13,7 @@ const router = express.Router();
 const { validateBody, isValidId } = require('../../middlewares');
 const { addSchema, updateSchema, updateFavoriteSchema } = require('../../schemas/contactsSchema');
 
-router.get('/', listContacts);
+router.get('/', getContacts);
 
 router.get('/:contactId', isValidId, getContactById);
 
