@@ -8,11 +8,13 @@ const addSchema = Joi.object({
   favorite: Joi.boolean(),
 });
 
-const updateSchema = Joi.object({
-  name: Joi.string().min(3).max(30),
-  email: Joi.string().email(),
-  phone: phoneJoi.string().phoneNumber(),
-});
+const updateSchema = Joi.object()
+  .keys({
+    name: addSchema.extract('name').optional(),
+    email: addSchema.extract('email').optional(),
+    phone: addSchema.extract('phone').optional(),
+  })
+  .or('name', 'email', 'phone');
 
 const updateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
