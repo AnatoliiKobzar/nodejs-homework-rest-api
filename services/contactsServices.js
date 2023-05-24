@@ -1,8 +1,8 @@
 const { HttpError } = require('../utils');
 const Contact = require('../models/contact');
 
-const getContactsService = async () => {
-  const contacts = await Contact.find();
+const getContactsService = async owner => {
+  const contacts = await Contact.find({ owner });
   return contacts;
 };
 

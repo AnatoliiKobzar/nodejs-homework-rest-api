@@ -9,7 +9,8 @@ const {
 
 const getContacts = async (req, res, next) => {
   try {
-    const contacts = await getContactsService();
+    const { _id: owner } = req.user;
+    const contacts = await getContactsService(owner);
     res.status(200).json(contacts);
   } catch (error) {
     next(error);
@@ -28,7 +29,8 @@ const getContactById = async (req, res, next) => {
 
 const addContact = async (req, res, next) => {
   try {
-    const newContact = await addContactService(req.body);
+    const { _id: owner } = req.user;
+    const newContact = await addContactService({ ...req.body, owner });
     res.status(201).json(newContact);
   } catch (error) {
     next(error);
