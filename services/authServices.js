@@ -37,11 +37,35 @@ const loginService = async body => {
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
+  await User.findByIdAndUpdate(user._id, { token });
 
-  return token;
+  return {
+    token,
+    user,
+  };
+};
+
+const logoutService = async user => {
+  const { _id: id } = user;
+  await User.findByIdAndUpdate(id, { token: '' });
+
+  return id;
+};
+
+const updateSubscriptionService = async (contactId, body) => {
+  if (Object.keys(body).length === 0) {
+    throw new HttpError(400, 'missing field subscription');
+  }
+  const user = await User.findByIdAndUpdate(contactId, body);
+  if (!user) {
+    throw new HttpError(404, 'Not found');
+  }
+  return user;
 };
 
 module.exports = {
   registerService,
   loginService,
+  logoutService,
+  updateSubscriptionService,
 };

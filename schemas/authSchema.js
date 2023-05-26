@@ -15,7 +15,12 @@ const loginValidationSchema = Joi.object().keys({
   password: createUserValidationSchema.extract('password'),
 });
 
+const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.valid('starter', 'pro', 'business'),
+});
+
 module.exports = {
   createUserValidationSchema,
   loginValidationSchema,
+  updateSubscriptionSchema,
 };

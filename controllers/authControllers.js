@@ -1,5 +1,10 @@
 const { controllerWrapper } = require('../utils');
-const { registerService, loginService } = require('../services/authServices');
+const {
+  registerService,
+  loginService,
+  logoutService,
+  updateSubscriptionService,
+} = require('../services/authServices');
 
 const register = controllerWrapper(async (req, res) => {
   const user = await registerService(req.body);
@@ -14,18 +19,41 @@ const register = controllerWrapper(async (req, res) => {
 const login = controllerWrapper(async (req, res) => {
   const result = await loginService(req.body);
   res.status(200).json({
-    token: result,
+    token: result.token,
     user: {
       email: req.body.email,
-      subscription: 'starter',
+      subscription: result.user.subscription,
     },
   });
 });
 
-const logout = controllerWrapper(async (req, res) => {});
+const getCurrent = controllerWrapper(async (req, res) => {
+  const { email, subscription } = req.user;
+  res.status(200).json({
+    user: {
+      email,
+      subscription,
+    },
+  });
+});
+
+const logout = controllerWrapper(async (req, res) => {
+  await logoutService(req.user);
+
+  res.status(204).end();
+});
+
+const updateSubscription = controllerWrapper(async (req, res) => {
+  const { userId } = req.params;
+  await updateSubscriptionService(userId, req.body);
+
+  res.status(200).json({ message: 'subscription updated' });
+});
 
 module.exports = {
   register,
   login,
+  getCurrent,
   logout,
+  updateSubscription,
 };
