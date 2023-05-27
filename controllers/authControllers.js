@@ -40,7 +40,7 @@ const getCurrent = controllerWrapper(async (req, res) => {
 const logout = controllerWrapper(async (req, res) => {
   await logoutService(req.user);
 
-  res.status(204).end();
+  res.status(200).json({ message: 'logout successful' });
 });
 
 const updateSubscription = controllerWrapper(async (req, res) => {

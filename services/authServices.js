@@ -53,9 +53,6 @@ const logoutService = async user => {
 };
 
 const updateSubscriptionService = async (contactId, body) => {
-  if (Object.keys(body).length === 0) {
-    throw new HttpError(400, 'missing field subscription');
-  }
   const user = await User.findByIdAndUpdate(contactId, body);
   if (!user) {
     throw new HttpError(404, 'Not found');
