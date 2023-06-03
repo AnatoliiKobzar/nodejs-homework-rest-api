@@ -3,6 +3,7 @@ const router = express.Router();
 const { validateBody, authenticate, upload } = require('../../middlewares');
 const {
   register,
+  verifyEmail,
   login,
   getCurrent,
   logout,
@@ -16,6 +17,8 @@ const {
 } = require('../../schemas/authSchema');
 
 router.post('/register', validateBody(createUserValidationSchema), register);
+
+router.get('/verify/:verificationToken', verifyEmail);
 
 router.post('/login', validateBody(loginValidationSchema), login);
 
