@@ -2,6 +2,7 @@ const { controllerWrapper } = require('../utils');
 const {
   registerService,
   verifyEmailService,
+  resendVerifyEmailService,
   loginService,
   logoutService,
   updateSubscriptionService,
@@ -21,6 +22,11 @@ const register = controllerWrapper(async (req, res) => {
 const verifyEmail = controllerWrapper(async (req, res) => {
   await verifyEmailService(req.params);
   res.status(200).json({ message: 'Verification successful' });
+});
+
+const resendVerifyEmail = controllerWrapper(async (req, res) => {
+  await resendVerifyEmailService(req.body);
+  res.status(200).json({ message: 'Verification email sent' });
 });
 
 const login = controllerWrapper(async (req, res) => {
@@ -66,6 +72,7 @@ const uploadAvatar = controllerWrapper(async (req, res) => {
 module.exports = {
   register,
   verifyEmail,
+  resendVerifyEmail,
   login,
   getCurrent,
   logout,

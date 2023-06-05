@@ -50,7 +50,29 @@ const verifyEmailService = async params => {
     throw new HttpError(404, 'User not found');
   }
 
-  await User.findByIdAndUpdate(user._id, { verify: true, verificactionToken: '' });
+  await User.findByIdAndUpdate(user._id, { verify: true, verificationToken: '' });
+
+  return true;
+};
+
+const resendVerifyEmailService = async body => {
+  const { email } = body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError(404, 'Email not found');
+  }
+  if (user.verify) {
+    throw new HttpError(400, 'Verification has already been passed');
+  }
+
+  const verifyEmail = {
+    to: email,
+    subject: 'Verify email',
+    html: `<a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}">Click verify email</a>`,
+  };
+
+  await sendEmail(verifyEmail);
 
   return true;
 };
@@ -123,6 +145,7 @@ const uploadAvatarService = async body => {
 module.exports = {
   registerService,
   verifyEmailService,
+  resendVerifyEmailService,
   loginService,
   logoutService,
   updateSubscriptionService,
